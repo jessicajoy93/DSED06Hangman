@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSED06Hangman", "DSED06Hangman\DSED06Hangman.csproj", "{FAF7067E-07D3-4728-B2BA-D42C8BA223FC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FAF7067E-07D3-4728-B2BA-D42C8BA223FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAF7067E-07D3-4728-B2BA-D42C8BA223FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAF7067E-07D3-4728-B2BA-D42C8BA223FC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{FAF7067E-07D3-4728-B2BA-D42C8BA223FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAF7067E-07D3-4728-B2BA-D42C8BA223FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAF7067E-07D3-4728-B2BA-D42C8BA223FC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8101E666-B365-4C6D-990D-A9D2C1312EE6}
+	EndGlobalSection
+EndGlobal
