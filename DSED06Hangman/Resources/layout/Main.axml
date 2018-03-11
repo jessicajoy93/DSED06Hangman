@@ -1,7 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:minWidth="25px"
+    android:minHeight="25px"
+    tools:gridSpec="1|8|#0093eeff|K:#ee8700ff:16,l:72,l:16,r|S:#83ee00ff:16,0,l:16,56,l:16,0,r"
+    android:padding="20dip">
+    <TextView
+        android:text="Please Enter Your Name"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView1"
+        android:textAlignment="center"
+        android:textSize="25dip"
+        android:padding="15dip" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etName"
+        android:textAlignment="center"
+        android:textSize="18dip"
+        android:padding="15dip"
+        android:background="@android:color/background_light"
+        android:textColor="@android:color/black" />
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="25dip"
+        android:id="@+id/space1" />
+    <Button
+        android:text="Play"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnPlay"
+        android:textSize="35dip"
+        android:padding="15dip" />
 </LinearLayout>

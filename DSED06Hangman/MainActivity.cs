@@ -4,7 +4,7 @@ using Android.OS;
 
 namespace DSED06Hangman
 {
-    [Activity(Label = "DSED06Hangman", MainLauncher = true)]
+    [Activity(Label = "Hangman", MainLauncher = true)]
     public class MainActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
