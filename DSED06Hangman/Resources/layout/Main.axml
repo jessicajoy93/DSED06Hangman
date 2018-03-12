@@ -8,6 +8,11 @@
     android:minHeight="25px"
     tools:gridSpec="1|8|#0093eeff|K:#ee8700ff:16,l:72,l:16,r|S:#83ee00ff:16,0,l:16,56,l:16,0,r"
     android:padding="20dip">
+    <ImageView
+        android:src="@drawable/hangman"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView1" />
     <TextView
         android:text="Please Enter Your Name"
         android:textAppearance="?android:attr/textAppearanceMedium"
