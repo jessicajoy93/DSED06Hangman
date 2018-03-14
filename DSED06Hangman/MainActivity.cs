@@ -1,19 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Widget;
 using Android.OS;
+using Android.Views;
 
 namespace DSED06Hangman
 {
     [Activity(Label = "Hangman", MainLauncher = true)]
     public class MainActivity : Activity
     {
-        private Button btnPlay;
+        public static Button btnPlay;
         private TextView txtName;
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            RequestWindowFeature(WindowFeatures.NoTitle);
             base.OnCreate(savedInstanceState);
 
             // Set our view from the "main" layout resource
