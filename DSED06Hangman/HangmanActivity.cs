@@ -23,10 +23,12 @@ namespace DSED06Hangman
         private string name;
         private Button btnHome;
         private int count = 0;
-        List<string> HangmanWordList = new List<string>();
         private TextView Word;
         private TextView WordToGuess;
-        //private Array HangmanWordArray;
+        private ImageView HangmanImage;
+        private LinearLayout Keyboard;
+        private LinearLayout Status;
+        private TextView GameStatus;
 
         private Button btnA;
         private Button btnB;
@@ -172,33 +174,92 @@ namespace DSED06Hangman
 
             if (fakeBtn.Clickable)
             {
+                string word = new string(Words.Word);
+
                 for (int i = 0; i < Words.Word.Length; i++)
                 {
                     var letter = Words.Word[i];
-                    if (letter.ToString() == fakeBtn.Tag.ToString())
+
+                    if (word.Contains(letter))
                     {
-                        Words.WordGuess[i] = (char)letter;
+                        //finds if letter clicked is anywhere in the word
+
+                        if (letter.ToString() == fakeBtn.Tag.ToString())
+                        {
+                            Words.WordGuess[i] = (char)letter;
+                        }
+                    }
+
+
+                }
+                if (word.Contains(fakeBtn.Tag.ToString()) != true)
+                {
+                    Words.HangmanLevel++;
+                    Toast.MakeText(this, "The letter " + fakeBtn.Tag + " is not in the Word.\nHangman Stage: " + Words.HangmanLevel, ToastLength.Long).Show();
+
+                    //Switch Statement to change image
+                    HangmanImage = FindViewById<ImageView>(Resource.Id.ivHangmanStage);
+                    if (Words.HangmanLevel == 1)
+                    {
+                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
+
+                        HangmanImage.SetImageResource(Resource.Drawable.stage1);
+                    }
+                    if (Words.HangmanLevel == 2)
+                    {
+                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
+
+                        HangmanImage.SetImageResource(Resource.Drawable.stage2);
+                    }
+                    if (Words.HangmanLevel == 3)
+                    {
+                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
+
+                        HangmanImage.SetImageResource(Resource.Drawable.stage3);
+                    }
+                    if (Words.HangmanLevel == 4)
+                    {
+                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
+
+                        HangmanImage.SetImageResource(Resource.Drawable.stage4);
+                    }
+                    if (Words.HangmanLevel == 5)
+                    {
+                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
+
+                        HangmanImage.SetImageResource(Resource.Drawable.stage5);
+                    }
+                    if (Words.HangmanLevel == 6)
+                    {
+                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
+
+                        HangmanImage.SetImageResource(Resource.Drawable.stage6);
+                        Keyboard = FindViewById<LinearLayout>(Resource.Id.keyboard);
+                        Keyboard.Visibility = ViewStates.Gone;
+
+                        Status = FindViewById<LinearLayout>(Resource.Id.gameStatus);
+                        GameStatus = FindViewById<TextView>(Resource.Id.txtStatus);
+                        GameStatus.Text = "Game Over!!!";
+                        Status.Visibility = ViewStates.Visible;
                     }
                 }
+                Wordtoguess();
+                string wordGuess = new string(Words.WordGuess);
+                if (wordGuess.Contains("_") != true)
+                {
+                    //HangmanImage.SetImageResource(Resource.Drawable.stage6);
+                    Keyboard = FindViewById<LinearLayout>(Resource.Id.keyboard);
+                    Keyboard.Visibility = ViewStates.Gone;
 
-                //foreach (char letter in Words.Word)
-                //{
-                //    //for (int i = 0; i < Words.Word.Length; i++)
-                //    //    {
-                //    //Words.WordGuess[i] = (char)fakeBtn.Tag;
-                //    //Words.WordGuess = (char[])fakeBtn.Tag;
-                //    if (fakeBtn.Tag.ToString() == letter.ToString())
-                //    {
-
-                //    }
-                //    //}
-
-                //    //}
-                //}
+                    Status = FindViewById<LinearLayout>(Resource.Id.gameStatus);
+                    GameStatus = FindViewById<TextView>(Resource.Id.txtStatus);
+                    GameStatus.Text = "You Win!!!";
+                    Status.Visibility = ViewStates.Visible;
+                }
 
                 fakeBtn.Enabled = false;
             }
-            Wordtoguess();
+
         }
 
         private void Wordtoguess()
