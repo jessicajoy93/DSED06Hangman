@@ -172,25 +172,29 @@ namespace DSED06Hangman
 
             if (fakeBtn.Clickable)
             {
-                // Words.WordGuess = "";
-                //string word = Words.Word.ToString();
-                foreach (char letter in Words.WordGuess)
+                for (int i = 0; i < Words.Word.Length; i++)
                 {
-                    //if (word.Contains(fakeBtn.Tag.ToString()) == true)
-                    //{
-                    if (fakeBtn.Tag.ToString() == letter.ToString())
+                    var letter = Words.Word[i];
+                    if (letter.ToString() == fakeBtn.Tag.ToString())
                     {
-                        for (int i = 0; i < Words.WordGuess.Length; i++)
-                        {
-                            char wordguess = Words.Word[i];
-                            //Words.WordGuess = fakeBtn.Tag.ToString();
-                        }
+                        Words.WordGuess[i] = (char)letter;
                     }
-                    //}
                 }
 
+                //foreach (char letter in Words.Word)
+                //{
+                //    //for (int i = 0; i < Words.Word.Length; i++)
+                //    //    {
+                //    //Words.WordGuess[i] = (char)fakeBtn.Tag;
+                //    //Words.WordGuess = (char[])fakeBtn.Tag;
+                //    if (fakeBtn.Tag.ToString() == letter.ToString())
+                //    {
 
+                //    }
+                //    //}
 
+                //    //}
+                //}
 
                 fakeBtn.Enabled = false;
             }
