@@ -8,7 +8,7 @@ using Android.Views;
 
 namespace DSED06Hangman
 {
-    [Activity(Label = "Hangman", MainLauncher = true)]
+    [Activity(Label = "Hangman", MainLauncher = true, Icon = "@drawable/stage6", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class MainActivity : Activity
     {
         public static Button btnPlay;

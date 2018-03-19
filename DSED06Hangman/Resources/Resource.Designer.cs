@@ -180,6 +180,9 @@ namespace DSED06Hangman
 			// aapt resource value: 0x7f050005
 			public const int ivHangmanStage = 2131034117;
 			
+			// aapt resource value: 0x7f05000c
+			public const int lblHangmanWordToGuess = 2131034124;
+			
 			// aapt resource value: 0x7f050008
 			public const int lblName = 2131034120;
 			
@@ -230,9 +233,6 @@ namespace DSED06Hangman
 			
 			// aapt resource value: 0x7f050009
 			public const int textView3 = 2131034121;
-			
-			// aapt resource value: 0x7f05000c
-			public const int txtHangmanWordToGuess = 2131034124;
 			
 			static Id()
 			{

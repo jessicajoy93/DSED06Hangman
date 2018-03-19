@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,10 +12,11 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Object = Java.Lang.Object;
 
 namespace DSED06Hangman
 {
-    [Activity(Label = "Hangman")]
+    [Activity(Label = "Hangman", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
     public class HangmanActivity : Activity
     {
         private TextView txtName;
@@ -23,6 +25,8 @@ namespace DSED06Hangman
         private int count = 0;
         List<string> HangmanWordList = new List<string>();
         private TextView Word;
+        private TextView WordToGuess;
+        //private Array HangmanWordArray;
 
         private Button btnA;
         private Button btnB;
@@ -63,8 +67,10 @@ namespace DSED06Hangman
             txtName.Text = name;
 
             Home();
-            //AlphabetButtons();
+            AlphabetButtons();
             LoadWords();
+
+
             //Words();
         }
 
@@ -73,41 +79,64 @@ namespace DSED06Hangman
             //need to tie the asset manager to these assets in this project. This method can only run under the activity as it doesn't know what Assets is otherwise, this.Assets doesn't work
             try
             {
-                var word = "awkward";
-                Words.Word = word;
-                Toast.MakeText(this, Words.Word, ToastLength.Long).Show();
-                //var assets = Assets;
-                //using (var sr = new StreamReader(assets.Open("words.txt")))
-                //{
-                //    while (!sr.EndOfStream)
-                //    {
-                //        var text = sr.ReadLine();
-                //        if (text != string.Empty && text.Length > 3) //ignore empty lines or words less than 3 letters
-                //        {
-                //            text = text.Trim();
-                //            var word = text.Remove(text.IndexOf(' '));
+                // Hardcoded for testing purposes. To be commented out later.
+                var word = "awkward".ToUpper();
 
-                //            //cut the stuff you don't want
-                //            if (word.Contains("-"))
-                //            {
-                //                word = word.Replace("-", "");
-                //            }
+                char[] WordArray = new char[word.Length];
+                //int WordArrayLength = WordArray.Length;
 
-                //            word = word.Trim();
-                //            Toast.MakeText(this, word, ToastLength.Long).Show();
-                //        }
-                //    }
-                //}
+                WordArray = word.ToArray();
+                Words.Word = WordArray;
+
+
+                var underscore = "_";
+                char[] WordGuessArray;
+                string WordGuess = null;
+                foreach (char letter in Words.Word)
+                {
+                    WordGuess += "_";
+                }
+
+                WordGuessArray = WordGuess.ToArray();
+                Words.WordGuess = WordGuessArray;
+
+                Wordtoguess();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Toast.MakeText(this, "Database didn't load", ToastLength.Short).Show();
+                Toast.MakeText(this, "Database didn't load\n " + e, ToastLength.Short).Show();
             }
         }
 
         private void AlphabetButtons()
         {
-            MainActivity.btnPlay.Click += btnClick;
+            btnA = FindViewById<Button>(Resource.Id.btnA);
+            btnB = FindViewById<Button>(Resource.Id.btnB);
+            btnC = FindViewById<Button>(Resource.Id.btnC);
+            btnD = FindViewById<Button>(Resource.Id.btnD);
+            btnE = FindViewById<Button>(Resource.Id.btnE);
+            btnF = FindViewById<Button>(Resource.Id.btnF);
+            btnG = FindViewById<Button>(Resource.Id.btnG);
+            btnH = FindViewById<Button>(Resource.Id.btnH);
+            btnI = FindViewById<Button>(Resource.Id.btnI);
+            btnJ = FindViewById<Button>(Resource.Id.btnJ);
+            btnK = FindViewById<Button>(Resource.Id.btnK);
+            btnL = FindViewById<Button>(Resource.Id.btnL);
+            btnM = FindViewById<Button>(Resource.Id.btnM);
+            btnN = FindViewById<Button>(Resource.Id.btnN);
+            btnO = FindViewById<Button>(Resource.Id.btnO);
+            btnP = FindViewById<Button>(Resource.Id.btnP);
+            btnQ = FindViewById<Button>(Resource.Id.btnQ);
+            btnR = FindViewById<Button>(Resource.Id.btnR);
+            btnS = FindViewById<Button>(Resource.Id.btnS);
+            btnT = FindViewById<Button>(Resource.Id.btnT);
+            btnU = FindViewById<Button>(Resource.Id.btnU);
+            btnV = FindViewById<Button>(Resource.Id.btnV);
+            btnW = FindViewById<Button>(Resource.Id.btnW);
+            btnX = FindViewById<Button>(Resource.Id.btnX);
+            btnY = FindViewById<Button>(Resource.Id.btnY);
+            btnZ = FindViewById<Button>(Resource.Id.btnZ);
+
             btnA.Click += ButtonClick;
             btnB.Click += ButtonClick;
             btnC.Click += ButtonClick;
@@ -136,57 +165,42 @@ namespace DSED06Hangman
             btnZ.Click += ButtonClick;
         }
 
-        private void btnClick(object sender, EventArgs e)
-        {
-            btnA.Enabled = true;
-            btnB.Enabled = true;
-            btnC.Enabled = true;
-            btnD.Enabled = true;
-            btnE.Enabled = true;
-            btnF.Enabled = true;
-            btnG.Enabled = true;
-            btnH.Enabled = true;
-            btnI.Enabled = true;
-            btnJ.Enabled = true;
-            btnK.Enabled = true;
-            btnL.Enabled = true;
-            btnM.Enabled = true;
-            btnN.Enabled = true;
-            btnO.Enabled = true;
-            btnP.Enabled = true;
-            btnQ.Enabled = true;
-            btnR.Enabled = true;
-            btnS.Enabled = true;
-            btnT.Enabled = true;
-            btnU.Enabled = true;
-            btnV.Enabled = true;
-            btnW.Enabled = true;
-            btnX.Enabled = true;
-            btnY.Enabled = true;
-            btnZ.Enabled = true;
-
-            GenerateWord();
-        }
-
-        private void GenerateWord()
-        {
-            Random rand = new Random();
-
-            int RndNumber = rand.Next(1, HangmanWordList.Count);
-
-            Words.Word = HangmanWordList[RndNumber];
-            Word.Text = Words.Word;
-        }
-
         private void ButtonClick(object sender, EventArgs e)
         {
             //make a fake button
-            Button btn = (Button)sender;
+            Button fakeBtn = (Button)sender;
 
-            //if (btn.Text == Clicked)
-            //{
+            if (fakeBtn.Clickable)
+            {
+                // Words.WordGuess = "";
+                //string word = Words.Word.ToString();
+                foreach (char letter in Words.WordGuess)
+                {
+                    //if (word.Contains(fakeBtn.Tag.ToString()) == true)
+                    //{
+                    if (fakeBtn.Tag.ToString() == letter.ToString())
+                    {
+                        for (int i = 0; i < Words.WordGuess.Length; i++)
+                        {
+                            char wordguess = Words.Word[i];
+                            //Words.WordGuess = fakeBtn.Tag.ToString();
+                        }
+                    }
+                    //}
+                }
 
-            //}
+
+
+
+                fakeBtn.Enabled = false;
+            }
+            Wordtoguess();
+        }
+
+        private void Wordtoguess()
+        {
+            WordToGuess = FindViewById<TextView>(Resource.Id.lblHangmanWordToGuess);
+            WordToGuess.Text = new string(Words.WordGuess);
         }
 
         private void HangmanWords()
