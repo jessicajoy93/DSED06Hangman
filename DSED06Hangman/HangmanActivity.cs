@@ -20,15 +20,19 @@ namespace DSED06Hangman
     public class HangmanActivity : Activity
     {
         private TextView txtName;
-        private string name;
+        private TextView txtScore;
         private Button btnHome;
-        private int count = 0;
-        private TextView Word;
+        private Button btnScore;
+        private Button btnNewGame;
+
         private TextView WordToGuess;
         private ImageView HangmanImage;
         private LinearLayout Keyboard;
         private LinearLayout Status;
         private TextView GameStatus;
+
+        List<string> WordList = new List<string>();
+        private string tag = "aaa";
 
         private Button btnA;
         private Button btnB;
@@ -64,34 +68,108 @@ namespace DSED06Hangman
 
             // Create your application here
             SetContentView(Resource.Layout.Hangman);
-            name = Intent.GetStringExtra("Name");
-            txtName = FindViewById<TextView>(Resource.Id.lblName);
-            txtName.Text = name;
+            Words.Name = Intent.GetStringExtra("Name");
+            UsersName();
+
+            Score();
 
             Home();
+            NewGame();
+            HighScore();
+
             AlphabetButtons();
-            LoadWords();
 
-
-            //Words();
+            LoadWordsFromFile();
+            GenerateWord();
+            //LoadWords();
         }
 
-        private void LoadWords()
+        private void UsersName()
+        {
+            txtName = FindViewById<TextView>(Resource.Id.lblName);
+            txtName.Text = Words.Name;
+        }
+
+        private void Score()
+        {
+            //Score
+            txtScore = FindViewById<TextView>(Resource.Id.lblScore);
+            txtScore.Text = Words.Score.ToString();
+        }
+
+        private void LoadWordsFromFile()
         {
             //need to tie the asset manager to these assets in this project. This method can only run under the activity as it doesn't know what Assets is otherwise, this.Assets doesn't work
             try
             {
-                // Hardcoded for testing purposes. To be commented out later.
-                var word = "awkward".ToUpper();
+                var assets = Assets;
+                using (var sr = new StreamReader(assets.Open("words.txt")))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        var text = sr.ReadLine();
+                        if (text != string.Empty && text.Length > 4) //ignore empty lines or words less than 4 letters
+                        {
+                            text = text.Trim();
 
-                char[] WordArray = new char[word.Length];
+                            //var word = text.Remove(text.IndexOf(' '));
+
+                            //cut out the stuff you don't want
+                            if (text.Contains("-"))
+                            {
+                                text = text.Replace("-", "");
+                            }
+
+                            text = text.Trim();
+
+                            if (!WordList.Contains(text) && text.Length > 4)
+                            {
+                                WordList.Add(text);
+                            }
+
+                            Log.Info(tag, "Dictionary Loaded");
+
+
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Toast.MakeText(this, "Database didn't load", ToastLength.Long).Show();
+                Console.WriteLine(e);
+            }
+        }
+
+        private void GenerateWord()
+        {
+            Log.Info(tag, "Generate Word");
+            Random rand = new Random();
+            int count = WordList.Count;
+
+            int RndNumber = rand.Next(1, count);
+
+            Log.Info(tag, "RndNumber " + RndNumber);
+            Words.word = WordList[RndNumber].ToUpper();
+            Log.Info(tag, "Myword = " + Words.word);
+            //Toast.MakeText(this, Words.word, ToastLength.Long).Show();
+            LoadWord();
+        }
+
+        private void LoadWord()
+        {
+
+            try
+            {
+                // Hardcoded for testing purposes. To be commented out later.
+                //var word = "awkward".ToUpper();
+
+                char[] WordArray = new char[Words.word.Length];
                 //int WordArrayLength = WordArray.Length;
 
-                WordArray = word.ToArray();
+                WordArray = Words.word.ToArray();
                 Words.Word = WordArray;
 
-
-                var underscore = "_";
                 char[] WordGuessArray;
                 string WordGuess = null;
                 foreach (char letter in Words.Word)
@@ -174,92 +252,121 @@ namespace DSED06Hangman
 
             if (fakeBtn.Clickable)
             {
-                string word = new string(Words.Word);
 
-                for (int i = 0; i < Words.Word.Length; i++)
-                {
-                    var letter = Words.Word[i];
+                SearchesLetterInWord(fakeBtn);
 
-                    if (word.Contains(letter))
-                    {
-                        //finds if letter clicked is anywhere in the word
-
-                        if (letter.ToString() == fakeBtn.Tag.ToString())
-                        {
-                            Words.WordGuess[i] = (char)letter;
-                        }
-                    }
-
-
-                }
-                if (word.Contains(fakeBtn.Tag.ToString()) != true)
-                {
-                    Words.HangmanLevel++;
-                    Toast.MakeText(this, "The letter " + fakeBtn.Tag + " is not in the Word.\nHangman Stage: " + Words.HangmanLevel, ToastLength.Long).Show();
-
-                    //Switch Statement to change image
-                    HangmanImage = FindViewById<ImageView>(Resource.Id.ivHangmanStage);
-                    if (Words.HangmanLevel == 1)
-                    {
-                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
-
-                        HangmanImage.SetImageResource(Resource.Drawable.stage1);
-                    }
-                    if (Words.HangmanLevel == 2)
-                    {
-                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
-
-                        HangmanImage.SetImageResource(Resource.Drawable.stage2);
-                    }
-                    if (Words.HangmanLevel == 3)
-                    {
-                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
-
-                        HangmanImage.SetImageResource(Resource.Drawable.stage3);
-                    }
-                    if (Words.HangmanLevel == 4)
-                    {
-                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
-
-                        HangmanImage.SetImageResource(Resource.Drawable.stage4);
-                    }
-                    if (Words.HangmanLevel == 5)
-                    {
-                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
-
-                        HangmanImage.SetImageResource(Resource.Drawable.stage5);
-                    }
-                    if (Words.HangmanLevel == 6)
-                    {
-                        //txtName = FindViewById<TextView>(Resource.Id.lblName);
-
-                        HangmanImage.SetImageResource(Resource.Drawable.stage6);
-                        Keyboard = FindViewById<LinearLayout>(Resource.Id.keyboard);
-                        Keyboard.Visibility = ViewStates.Gone;
-
-                        Status = FindViewById<LinearLayout>(Resource.Id.gameStatus);
-                        GameStatus = FindViewById<TextView>(Resource.Id.txtStatus);
-                        GameStatus.Text = "Game Over!!!";
-                        Status.Visibility = ViewStates.Visible;
-                    }
-                }
                 Wordtoguess();
-                string wordGuess = new string(Words.WordGuess);
-                if (wordGuess.Contains("_") != true)
+                NotContainsLetter(fakeBtn);
+                GameWon();
+
+                fakeBtn.Enabled = false;
+            }
+
+        }
+
+        private static void SearchesLetterInWord(Button fakeBtn)
+        {
+            //Converts Words.Word to a string as you can not use Contains with a char
+            Words.word = new string(Words.Word);
+
+            //searches word to check if the letter clicked is in the word
+            for (int i = 0; i < Words.Word.Length; i++)
+            {
+                var letter = Words.Word[i];
+
+                if (Words.word.Contains(letter))
                 {
-                    //HangmanImage.SetImageResource(Resource.Drawable.stage6);
+                    //finds if letter clicked is anywhere in the word
+                    if (letter.ToString() == fakeBtn.Tag.ToString())
+                    {
+                        Words.WordGuess[i] = (char)letter;
+                    }
+                }
+
+
+            }
+        }
+
+        private void NotContainsLetter(Button fakeBtn)
+        {
+            if (Words.word.Contains(fakeBtn.Tag.ToString()) != true)
+            {
+                Words.HangmanLevel++;
+
+                //Switch Statement to change image if letter is not in the word
+                HangmanImage = FindViewById<ImageView>(Resource.Id.ivHangmanStage);
+                HangmanLevels();
+            }
+        }
+
+        private void GameWon()
+        {
+            //Converts Words.WordGuess to a string as you can not use Contains with a char
+            Words.wordGuess = new string(Words.WordGuess);
+            if (Words.wordGuess.Contains("_") != true)
+            {
+                //HangmanImage.SetImageResource(Resource.Drawable.stage6);
+                Keyboard = FindViewById<LinearLayout>(Resource.Id.keyboard);
+                Keyboard.Visibility = ViewStates.Gone;
+
+                Status = FindViewById<LinearLayout>(Resource.Id.gameStatus);
+                GameStatus = FindViewById<TextView>(Resource.Id.txtStatus);
+                GameStatus.Text = "You Win!!!";
+                Status.Visibility = ViewStates.Visible;
+
+                //Add 1 to score
+                Words.Score++;
+                Words.HangmanLevel = 0;
+                Score();
+            }
+        }
+
+        private void HangmanLevels()
+        {
+            switch (Words.HangmanLevel)
+            {
+                case 1:
+                    HangmanImage.SetImageResource(Resource.Drawable.stage1);
+                    break;
+                case 2:
+                    HangmanImage.SetImageResource(Resource.Drawable.stage2);
+                    break;
+                case 3:
+                    HangmanImage.SetImageResource(Resource.Drawable.stage3);
+                    break;
+                case 4:
+                    HangmanImage.SetImageResource(Resource.Drawable.stage4);
+                    break;
+                case 5:
+                    HangmanImage.SetImageResource(Resource.Drawable.stage5);
+                    break;
+                case 6:
+                    //display correct word
+                    //Words.WordGuess = Words.Word;
+                    WordToGuess = FindViewById<TextView>(Resource.Id.lblHangmanWordToGuess);
+                    WordToGuess.Text = Words.word;
+
+
+                    HangmanImage.SetImageResource(Resource.Drawable.stage6);
                     Keyboard = FindViewById<LinearLayout>(Resource.Id.keyboard);
                     Keyboard.Visibility = ViewStates.Gone;
 
                     Status = FindViewById<LinearLayout>(Resource.Id.gameStatus);
                     GameStatus = FindViewById<TextView>(Resource.Id.txtStatus);
-                    GameStatus.Text = "You Win!!!";
+                    GameStatus.Text = "Game Over!!!";
                     Status.Visibility = ViewStates.Visible;
-                }
 
-                fakeBtn.Enabled = false;
+
+
+                    //Reset score to 0
+                    Words.Score = 0;
+                    Words.HangmanLevel = 0;
+                    Score();
+
+
+
+                    break;
             }
-
         }
 
         private void Wordtoguess()
@@ -268,39 +375,43 @@ namespace DSED06Hangman
             WordToGuess.Text = new string(Words.WordGuess);
         }
 
-        private void HangmanWords()
-        {
-            int lineCount = File.ReadAllLines(@"C:\words.txt").Length;
-            Random rnd = new Random();
-            int randomLineNum = rnd.Next(lineCount);
-            int indicator = 0;
-
-            using (var reader = File.OpenText(@"C:\words.txt"))
-            {
-                while (reader.ReadLine() != null)
-                {
-                    if (indicator == randomLineNum)
-                    {
-                        break;
-                    }
-                    indicator++;
-                    Toast.MakeText(this, "Your random line is " + indicator, ToastLength.Long).Show();
-                }
-            }
-        }
-
         private void Home()
         {
             btnHome = FindViewById<Button>(Resource.Id.btnHome);
-            btnHome.Click += onHome_Click;
+            btnHome.Click += OnHome_Click;
         }
 
-        private void onHome_Click(object sender, EventArgs e)
+        private void OnHome_Click(object sender, EventArgs e)
         {
             var homeActivityIntent = new Intent(this, typeof(MainActivity));
-            name = "";
+            Words.Name = "";
             txtName.Text = "";
             StartActivity(homeActivityIntent);
+        }
+
+        private void HighScore()
+        {
+            btnScore = FindViewById<Button>(Resource.Id.btnScore);
+            btnScore.Click += OnHighScore_Click;
+        }
+
+        private void OnHighScore_Click(object sender, EventArgs e)
+        {
+            var scoreActivityIntent = new Intent(this, typeof(ScoreActivity));
+            StartActivity(scoreActivityIntent);
+        }
+
+        private void NewGame()
+        {
+            btnNewGame = FindViewById<Button>(Resource.Id.btnNewGame);
+            btnNewGame.Click += OnNewGame_Click;
+        }
+
+        private void OnNewGame_Click(object sender, EventArgs e)
+        {
+            var newGameActivityIntent = new Intent(this, typeof(HangmanActivity));
+            StartActivity(newGameActivityIntent);
+            UsersName();
         }
     }
 }

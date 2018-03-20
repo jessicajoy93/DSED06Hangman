@@ -29,10 +29,10 @@ namespace DSED06Hangman
         {
             txtName = FindViewById<TextView>(Resource.Id.etName);
             btnPlay = FindViewById<Button>(Resource.Id.btnPlay);
-            btnPlay.Click += onPlay_Click;
+            btnPlay.Click += OnPlay_Click;
         }
 
-        private void onPlay_Click(object sender, EventArgs e)
+        private void OnPlay_Click(object sender, EventArgs e)
         {
             //Toast.MakeText(this, "Your name is " + txtName.Text, ToastLength.Long).Show();
 

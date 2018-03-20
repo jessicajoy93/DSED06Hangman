@@ -48,21 +48,29 @@
     <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Data.Sqlite, Version=1.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Sqlite.1.1.0\lib\netstandard1.3\Microsoft.Data.Sqlite.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseManager.cs" />
     <Compile Include="HangmanActivity.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScoreActivity.cs" />
     <Compile Include="Words.cs" />
   </ItemGroup>
   <ItemGroup>
     <AndroidAsset Include="Assets\Scores.db" />
     <None Include="GettingStarted.Xamarin" />
+    <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="Assets\AboutAssets.txt" />
@@ -70,6 +78,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <None Include="Resources\DK Hangman%27s Delight.otf" />
+    <AndroidResource Include="Resources\layout\GameScore.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Main.axml">
@@ -109,7 +120,9 @@
     <AndroidResource Include="Resources\drawable\hangman.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Assets\words.txt" />
+    <AndroidAsset Include="Assets\words.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AndroidAsset>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,6 +5,25 @@
     android:layout_height="match_parent"
     android:padding="10dip"
     android:background="@android:color/black">
+    <ActionMenuView
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/actionMenuView1">
+        <Button
+            android:text="Home"
+            android:id="@+id/btnHome"
+            android:background="#DA2812"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <Button
+            android:text="Scores"
+            android:id="@+id/btnScore"
+            android:background="#DA2812"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </ActionMenuView>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -13,16 +32,8 @@
         <ImageView
             android:src="@drawable/hangman"
             android:id="@+id/imageView1"
-            android:layout_weight="75"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent" />
-        <Button
-            android:text="Home"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/btnHome"
-            android:layout_weight="25"
-            android:background="#DA2812" />
+            android:layout_height="match_parent" />
     </LinearLayout>
     <Space
         android:layout_width="match_parent"
@@ -105,7 +116,7 @@
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dip"
             android:id="@+id/keyboard"
             android:visibility="visible">
             <LinearLayout
@@ -403,17 +414,25 @@
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="150dip"
             android:id="@+id/gameStatus"
             android:visibility="gone">
             <TextView
                 android:text="Large Text"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="100dip"
                 android:id="@+id/txtStatus"
                 android:gravity="center"
-                android:textSize="100dip" />
+                android:textSize="55dip"
+                android:padding="5dip" />
+            <Button
+                android:text="New Game"
+                android:layout_width="match_parent"
+                android:layout_height="50dip"
+                android:id="@+id/btnNewGame"
+                android:background="#DA2812"
+                android:layout_margin="5dip" />
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -61,7 +61,11 @@
             android:padding="15dip"
             android:background="@android:color/background_light"
             android:textColor="@android:color/black"
-            android:gravity="center" />
+            android:gravity="center"
+            android:maxLines="1"
+            android:minLines="1"
+            android:textAllCaps="true"
+            android:singleLine="true" />
         <Space
             android:layout_width="match_parent"
             android:layout_height="25dip"

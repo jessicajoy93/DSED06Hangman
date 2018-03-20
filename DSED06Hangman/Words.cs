@@ -19,5 +19,9 @@ namespace DSED06Hangman
         public static char[] WordGuess { get; set; }
         public static int Score { get; set; } = 0;
         public static int HangmanLevel { get; set; } = 0;
+        public static string word { get; set; }
+        public static string wordGuess { get; set; }
+        public static string Name { get; set; }
+
     }
 }
