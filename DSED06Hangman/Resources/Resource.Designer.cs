@@ -238,7 +238,7 @@ namespace DSED06Hangman
 			public const int linearLayout7 = 2131034124;
 			
 			// aapt resource value: 0x7f050003
-			public const int listView1 = 2131034115;
+			public const int lvHighScores = 2131034115;
 			
 			// aapt resource value: 0x7f050039
 			public const int space1 = 2131034169;
@@ -279,6 +279,12 @@ namespace DSED06Hangman
 			
 			// aapt resource value: 0x7f030002
 			public const int Main = 2130903042;
+			
+			// aapt resource value: 0x7f030003
+			public const int ScoreAdd = 2130903043;
+			
+			// aapt resource value: 0x7f030004
+			public const int ScoreEdit = 2130903044;
 			
 			static Layout()
 			{

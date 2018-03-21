@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -10,6 +11,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using SQLite;
 
 namespace DSED06Hangman
 {
@@ -23,37 +25,77 @@ namespace DSED06Hangman
 
 
         //YOUR CLASS NAME MUST BE YOUR TABLE NAME
-        private string tag = "aaaaa";
-        SQLiteConnection db;
+        private string dbConnection;
 
         public DatabaseManager()
         {
-            DBConnect();
+            dbConnection = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Scores.db");
+            SQLiteConnection db = database();
         }
 
-        private void DBConnect()
+        private SQLiteConnection database()
         {
-            db = new SQLiteConnection(System.IO.Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), "Scores.db"));
+            return new SQLiteConnection(dbConnection);
         }
 
-        public void AddItem()
+        public List<tblscores> ViewAll()
         {
-            Log.Info(tag, "AddTem Name = " + Words.Name + " AddItem Score = " + Words.Score);
             try
             {
-                var AddThis = new scoring
-                {
-                    Name = Words.Name,
-                    Score = Words.Score
-                };
-                db.Insert(AddThis);
-
-                Log.Info(tag)
+                SQLiteConnection db = database();
+                return db.Query<tblscores>("select * from tblscores");
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                throw;
+                Console.WriteLine("Error: " + e.Message);
+                return null;
+            }
+        }
+
+        public void AddItem(string name, int score)
+        {
+            try
+            {
+                SQLiteConnection db = database();
+
+                var AddThis = new tblscores() { Name = name, Score = score };
+                db.Insert(AddThis);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Add Error: " + e.Message);
+            }
+        }
+
+
+        public void EditItem(string name, int score, int id)
+        {
+            try
+            {
+                SQLiteConnection db = database();
+
+                var EditThis = new tblscores() { Name = name, Score = score, Id = id };
+                db.Update(EditThis);
+
+                //or this
+                //db.Execute("UPDATE tblscores Set")
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Update Error: " + e.Message);
+            }
+        }
+
+        public void DeleteItem(int id)
+        {
+            try
+            {
+                SQLiteConnection db = database();
+                db.Delete<tblscores>(id);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Delete Error: " + e.Message);
             }
         }
     }
